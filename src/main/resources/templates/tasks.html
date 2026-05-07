@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>タスク一覧</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    table {
+      width: auto;
+      table-layout: auto;
+      border-collapse: collapse;
+      border: none;
+      margin: 0 auto;
+    }
+
+    th,
+    td {
+      border: none;
+      padding: 12px 16px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    th {
+      background-color: #000000;
+      color: #ffffff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #ffffff;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #f5f5f5;
+    }
+
+    .create-button-area {
+      text-align: right;
+      margin-top: 10px;
+    }
+	
+	.pagination {
+	  margin-top: 20px;
+	  text-align: center;
+	}
+
+	.pagination span {
+	  display: inline-block;
+	}
+
+	.page-button {
+	  display: inline-block;
+	  padding: 8px 12px;
+	  border: 1px solid #dddddd;
+	  background-color: #ffffff;
+	  color: #1a73e8;
+	  text-decoration: none;
+	  font-weight: bold;
+	  margin-left: -1px;
+	}
+
+	.page-button:first-child {
+	  border-radius: 6px 0 0 6px;
+	}
+
+	.page-button:last-child {
+	  border-radius: 0 6px 6px 0;
+	}
+
+	.page-button.active {
+	  background-color: #1a73e8;
+	  color: #ffffff;
+	  border-color: #1a73e8;
+	}
+
+	.page-button.disabled {
+	  background-color: #f5f5f5;
+	  color: #999999;
+	  pointer-events: none;
+	}
+
+	.page-button:hover {
+	  background-color: #eeeeee;
+	}
+
+	.page-button.active:hover {
+	  background-color: #1a73e8;
+	}
+	
+	.edit-button{
+	  background-color: #3399ff;
+	  color: white;
+	  border: none;
+	  padding: 6px 14px;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  font-weight: bold;
+	}
+	
+	.delete-button{
+	  background-color: #ff4d4d;
+	  color: white;
+	  border: none;
+	  padding: 6px 14px;
+	  border-radius: 4px;
+	  cursor: pointer;
+	  font-weight: bold;
+	}
+	
+	.button-area {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  margin-top: 30px;
+	}
+	
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>タスク一覧</h1>
+
+
+
+
+  
+
+  <hr>
+
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>タイトル</th>
+      <th>内容</th>
+      <th>登録者</th>
+      <th>開始日</th>
+      <th>終了日</th>
+      <th>作成日時</th>
+      <th>更新日時</th>
+      <th>操作</th>
+    </tr>
+
+       <tr th:each="rec : ${allContents}">
+      <td th:text="${rec.id}"></td>
+      <td th:text="${rec.title}"></td>
+      <td th:utext="${rec.contents}"></td>
+      <td th:text="${rec.name}"></td>
+      <td th:text="${rec.startDate}"></td>
+      <td th:text="${rec.endDate}"></td>
+	  <td th:text="${#temporals.format(rec.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></td>
+	  <td th:text="${#temporals.format(rec.updatedAt, 'yyyy/MM/dd HH:mm:ss')}"></td>
+      <td>
+		
+        <button type="button" 
+				th:if="${rec.id != null}" 
+				th:onclick="|location.href='@{/tasks/edit/{id}(id=${rec.id})}'|" 
+				class="edit-button">
+				編集
+		</button>
+		
+		<form th:action="@{/tasks/delete/{id}(id=${rec.id})}" method="post" style="display:inline;">
+		  <button type="submit"
+		          th:if="${rec.id != null}"
+		          class="delete-button"
+		          onclick="return confirm('本当に削除しますか？');">
+		    削除
+		  </button>
+		</form>
+      </td>
+    </tr>
+   
+	<tr th:if="${#lists.isEmpty(allContents)}">
+	  <td colspan="9" style="text-align: center; padding: 20px;">
+	    現在タスクは登録されていません。新規作成から追加してください。
+	  </td>
+ </table>
+ 
+ 
+ <div class="pagination" th:if="${totalPages > 0}">
+
+   <a class="page-button"
+      th:if="${currentPage > 0}"
+      th:href="@{/tasks(page=${currentPage - 1})}">
+     « 前
+   </a>
+
+   <span class="page-button disabled" th:if="${currentPage == 0}">
+     « 前
+   </span>
+
+   <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+     <a class="page-button"
+        th:if="${i != currentPage}"
+        th:href="@{/tasks(page=${i})}"
+        th:text="${i + 1}">
+     </a>
+
+     <span class="page-button active"
+           th:if="${i == currentPage}"
+           th:text="${i + 1}">
+     </span>
+   </span>
+
+   <a class="page-button"
+      th:if="${currentPage + 1 < totalPages}"
+      th:href="@{/tasks(page=${currentPage + 1})}">
+     次 » 
+   </a>
+
+   <span class="page-button disabled" th:if="${currentPage + 1 >= totalPages}">
+     次 »
+   </span>
+
+ </div>
+
+ 
+ <div class="button-area">
+   <button type="button" class="new-button" onclick="location.href='/logout'">
+     ログアウト
+   </button>
+
+   <button type="button" class="new-button" onclick="location.href='/tasks/new'">
+     新規追加
+   </button>
+ </div>
+  </div>
+</body>
+
+</html>

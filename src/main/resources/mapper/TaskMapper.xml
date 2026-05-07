@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sample.common.dao.mapper.TaskMapper">
+
+  <resultMap id="TaskResultMap" type="sample.common.dao.entity.Task">
+    <id property="id" column="id"/>
+    <result property="title" column="title"/>
+    <result property="contents" column="content"/>
+    <result property="username" column="username"/>
+    <result property="name" column="name"/>
+    <result property="startDate" column="start_date"/>
+    <result property="endDate" column="end_date"/>
+    <result property="createdAt" column="created_at"/>
+    <result property="updatedAt" column="updated_at"/>
+  </resultMap>
+
+  <select id="findAll" resultMap="TaskResultMap">
+    SELECT
+      id,
+      title,
+      content,
+      username,
+      name,
+      start_date,
+      end_date,
+      created_at,
+      updated_at
+    FROM tasks
+    ORDER BY id DESC
+  </select>
+
+  <select id="findById" resultMap="TaskResultMap">
+    SELECT
+      id,
+      title,
+      content,
+      username,
+      name,
+      start_date,
+      end_date,
+      created_at,
+      updated_at
+    FROM tasks
+    WHERE id = #{id}
+  </select>
+
+  <insert id="insert" parameterType="sample.common.dao.entity.Task">
+    INSERT INTO tasks (
+      title,
+      content,
+      username,
+      name,
+      start_date,
+      end_date,
+      created_at,
+      updated_at
+    ) VALUES (
+      #{title},
+      #{contents},
+      #{username},
+      #{name},
+      #{startDate},
+      #{endDate},
+      #{createdAt},
+      #{updatedAt}
+    )
+  </insert>
+
+  <update id="update" parameterType="sample.common.dao.entity.Task">
+    UPDATE tasks
+    SET
+      title = #{title},
+      content = #{contents},
+      username = #{username},
+      name = #{name},
+      start_date = #{startDate},
+      end_date = #{endDate},
+      updated_at = #{updatedAt}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    DELETE FROM tasks
+    WHERE id = #{id}
+  </delete>
+
+</mapper>

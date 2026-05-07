@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>タスク編集</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .form-box {
+      background-color: #f5f5f5;
+      padding: 30px 40px;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .form-row {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: 360px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 120px;
+      resize: vertical;
+    }
+
+    .button-area {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .submit-button {
+      background-color: yellowgreen;
+      color: #ffffff;
+      border: none;
+      padding: 8px 24px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .cancel-button {
+      background-color: #000000;
+      color: #ffffff;
+      border: none;
+      padding: 8px 24px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: red;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>タスク編集</h1>
+
+    <hr>
+
+    <p th:if="${errorMessage != null}" th:text="${errorMessage}" class="error-message">
+      エラーメッセージ表示位置
+    </p>
+
+    <form th:action="@{/tasks/edit/{id}(id=${task.id})}" method="post" class="form-box">
+		
+
+		
+      <div class="form-row">
+        <label for="title">タイトル</label>
+        <input type="text" id="title" name="title"　th:value="${task.title}">
+      </div>
+
+      <div class="form-row">
+        <label for="contents">内容</label>
+        <textarea id="contents" name="contents" placeholder="内容を入力してください"></textarea>
+      </div>
+
+      <div class="form-row">
+        <label for="name">登録者</label>
+        <input type="text" id="name" name="name" th:value="${task.name}">
+      </div>
+
+      <div class="form-row">
+        <label for="startDate">開始日</label>
+        <input type="date" id="startDate" name="startDate" th:value="${task.startDate}">
+      </div>
+
+      <div class="form-row">
+        <label for="endDate">終了日</label>
+        <input type="date" id="endDate" name="endDate" th:value="${task.endDate}">
+      </div>
+
+      <div class="button-area">
+        <button type="submit" class="submit-button">更新</button>
+        <button type="button" class="cancel-button" onclick="location.href='/tasks'">キャンセル</button>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>

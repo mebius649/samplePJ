@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>TODOアプリ TOP</title>
+  <style>
+	.signup-btn{
+		outline: none;
+		background-color:#4db84d;
+		color: white;
+		border-radius: 8px;
+		font-size: 12px;
+		padding: 8px 8px;
+	}
+	.login-btn{
+		outline: none;
+		background-color: #4da6ff;
+		color: white;
+		border-radius: 8px;
+		font-size: 12px;
+		padding: 8px 8px;
+	}
+  </style>
+</head>
+
+<body>
+  <div style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+	<div style="text-align: center;">
+  <h1>TODOアプリ TOP</h1>
+
+  <table border="0" style="margin: 0 auto;">
+    <tr>
+      <td style="padding-right: 10px;">
+        <form th:action="@{/signup}" method="get">
+          <input type="submit" value="ユーザ登録" class="signup-btn">
+        </form>
+      </td>
+      <td>
+        <form th:action="@{/login}" method="get">
+          <input type="submit" value="ログイン" class="login-btn">
+        </form>
+      </td>
+    </tr>
+  </table>
+    </div>
+  </div>
+
+</body>
+</html>

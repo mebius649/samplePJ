@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ログイン</title>
+  <style>
+    .inputfield{
+        border-radius: 8px;
+        width: 400px;
+        height: 30px;
+        box-sizing: border-box;
+        border: 1px solid #cccccc;
+    }
+
+    .inputfield:focus{
+      outline: none;
+      border: 1px solid #99ccff;
+      box-shadow: 0 0 4px #99ccff;
+    }
+
+    .login-btn{
+      background-color: #3399ff;
+      color: white;
+      width: 400px;
+      height: 30px;
+      border-radius: 8px;
+      box-sizing: border-box;
+      border: 1px solid #cccccc;
+      
+    }
+
+    .form{
+      text-align: left;
+      display: inline-block;
+      border: 1px solid #cccccc;
+      padding: 20px;
+      border-radius: 8px
+    }
+
+    </style>
+</head>
+
+<body>
+  <center><h1>ログイン</h1></center>
+
+  <center><form th:action="@{/login}" method="post" class="form">
+	<p th:if="${message}" th:text="${message}" style="color: red;"></p>
+	
+    <div>
+      ユーザ名
+    </div>
+    <div>
+      <input type="text" name="userId" class="inputfield">
+    </div>
+
+    <br>
+
+    <div>
+      パスワード
+    </div>
+    <div>
+      <input type="password" name="password" class="inputfield">
+    </div>
+
+    <br>
+
+    <input type="submit" value="ログイン" class="login-btn">
+  </form></center>
+  
+  <div style="text-align: center;">
+    <a th:href="@{/signup}">新規登録はこちら</a>
+  </div>
+  
+	<div style="text-align: center;">
+	  <a th:href="@{/}">トップページへ</a>
+	</div>
+</body>
+</html>
