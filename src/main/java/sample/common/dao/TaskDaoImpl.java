@@ -15,13 +15,13 @@ public class TaskDaoImpl implements TaskDao {
     private TaskMapper taskMapper;
 
     @Override
-    public List<Task> findAll() {
-        return taskMapper.findAll();
+    public List<Task> findByUsername(String username) {
+        return taskMapper.findByUsername(username);
     }
 
     @Override
-    public Task findById(Long id) {
-        return taskMapper.findById(id);
+    public Task findByIdAndUsername(Long id, String username) {
+        return taskMapper.findByIdAndUsername(id, username);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TaskDaoImpl implements TaskDao {
     }
 
     @Override
-    public void deleteById(Long id) {
-        taskMapper.deleteById(id);
+    public void deleteByIdAndUsername(Long id, String username) {
+        taskMapper.deleteByIdAndUsername(id, username);
     }
 }

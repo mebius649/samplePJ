@@ -10,9 +10,6 @@ public interface UserMapper {
 
     User findByUserId(@Param("userId") String userId);
 
-    User findByUserIdAndPassword(
-            @Param("userId") String userId,
-            @Param("password") String password);
 
     void insert(User user);
 }

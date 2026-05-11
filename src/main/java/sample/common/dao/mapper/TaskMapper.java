@@ -10,13 +10,19 @@ import sample.common.dao.entity.Task;
 @Mapper
 public interface TaskMapper {
 
-    List<Task> findAll();
+    List<Task> findByUsername(@Param("username") String username);
 
-    Task findById(@Param("id") Long id);
+    Task findByIdAndUsername(
+            @Param("id") Long id,
+            @Param("username") String username
+    );
 
     void insert(Task task);
 
     void update(Task task);
 
-    void deleteById(@Param("id") Long id);
+    void deleteByIdAndUsername(
+            @Param("id") Long id,
+            @Param("username") String username
+    );
 }

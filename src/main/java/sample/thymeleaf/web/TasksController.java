@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import jakarta.servlet.http.HttpSession;
 import sample.common.dao.entity.Task;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import sample.common.dao.TaskDao;
 import java.util.List;
 
@@ -27,9 +24,15 @@ public class TasksController {
     private TaskDao taskDao;
 
     @GetMapping("/tasks")
-    public String tasks(Model model) {
+    public String tasks(Model model, HttpSession session) {
 
-        List<Task> allContents = taskDao.findAll();
+        String loginUsername = (String) session.getAttribute("loginUsername");
+
+        if (loginUsername == null) {
+            return "redirect:/login";
+        }
+
+        List<Task> allContents = taskDao.findByUsername(loginUsername);
         model.addAttribute("allContents", allContents);
 
         return "tasks";
@@ -91,7 +94,7 @@ public class TasksController {
             return "redirect:/login";
         }
 
-        Task task = taskDao.findById(id);
+        Task task = taskDao.findByIdAndUsername(id, loginUsername);
 
         if (task == null) {
             return "redirect:/tasks";
@@ -112,16 +115,16 @@ public class TasksController {
             @RequestParam("endDate") String endDate,
             HttpSession session) {
 
-        Task task = taskDao.findById(id);
-
-        if (task == null) {
-            return "redirect:/tasks";
-        }
-
         String loginUsername = (String) session.getAttribute("loginUsername");
 
         if (loginUsername == null) {
             return "redirect:/login";
+        }
+
+        Task task = taskDao.findByIdAndUsername(id, loginUsername);
+
+        if (task == null) {
+            return "redirect:/tasks";
         }
 
         task.setUsername(loginUsername);
@@ -157,10 +160,10 @@ public class TasksController {
             return "redirect:/login";
         }
 
-        Task task = taskDao.findById(id);
+        Task task = taskDao.findByIdAndUsername(id, loginUsername);
 
         if (task != null) {
-            taskDao.deleteById(id);
+            taskDao.deleteByIdAndUsername(id, loginUsername);
         }
 
         return "redirect:/tasks";

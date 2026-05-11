@@ -6,7 +6,6 @@ public interface UserDao {
 
     User findByUserId(String userId);
 
-    User findByUserIdAndPassword(String userId, String password);
 
     void insert(User user);
 }

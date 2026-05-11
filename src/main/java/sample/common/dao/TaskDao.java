@@ -6,13 +6,13 @@ import sample.common.dao.entity.Task;
 
 public interface TaskDao {
 
-    List<Task> findAll();
+    List<Task> findByUsername(String username);
 
-    Task findById(Long id);
+    Task findByIdAndUsername(Long id, String username);
 
     void insert(Task task);
 
     void update(Task task);
 
-    void deleteById(Long id);
+    void deleteByIdAndUsername(Long id, String username);
 }

@@ -17,34 +17,36 @@
     <result property="updatedAt" column="updated_at"/>
   </resultMap>
 
-  <select id="findAll" resultMap="TaskResultMap">
+  <select id="findByUsername" resultMap="TaskResultMap">
     SELECT
-      id,
-      title,
-      content,
-      username,
-      name,
-      start_date,
-      end_date,
-      created_at,
-      updated_at
+        id,
+        title,
+        content,
+        username,
+        name,
+        start_date,
+        end_date,
+        created_at,
+        updated_at
     FROM tasks
+    WHERE username = #{username}
     ORDER BY id DESC
   </select>
 
-  <select id="findById" resultMap="TaskResultMap">
+  <select id="findByIdAndUsername" resultMap="TaskResultMap">
     SELECT
-      id,
-      title,
-      content,
-      username,
-      name,
-      start_date,
-      end_date,
-      created_at,
-      updated_at
+        id,
+        title,
+        content,
+        username,
+        name,
+        start_date,
+        end_date,
+        created_at,
+        updated_at
     FROM tasks
     WHERE id = #{id}
+      AND username = #{username}
   </select>
 
   <insert id="insert" parameterType="sample.common.dao.entity.Task">
@@ -82,9 +84,10 @@
     WHERE id = #{id}
   </update>
 
-  <delete id="deleteById">
+  <delete id="deleteByIdAndUsername">
     DELETE FROM tasks
     WHERE id = #{id}
+      AND username = #{username}
   </delete>
 
 </mapper>

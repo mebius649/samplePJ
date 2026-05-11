@@ -20,15 +20,7 @@
     WHERE username = #{userId}
   </select>
 
-  <select id="findByUserIdAndPassword" resultMap="UserResultMap">
-    SELECT
-      id,
-      username,
-      password
-    FROM login
-    WHERE username = #{userId}
-      AND password = #{password}
-  </select>
+
 
   <insert id="insert" parameterType="sample.common.dao.entity.User">
     INSERT INTO login (

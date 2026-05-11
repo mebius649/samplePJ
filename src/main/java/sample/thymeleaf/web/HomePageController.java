@@ -1,7 +1,5 @@
 package sample.thymeleaf.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,46 +8,39 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
-import sample.common.dao.TaskDao;
-import sample.common.dao.UserDao;
-import sample.common.dao.entity.Task;
-import sample.common.dao.entity.User;
 import sample.common.service.LoginService;
+
 @Controller
 public class HomePageController {
 
-	@GetMapping("/")
-	public String top() {
-		return "homePage";
-	}
-	
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
-	
-	@GetMapping("/signup")
-	public String signup() {
-		return "signup";
-	}
-	
-	@GetMapping("/menu")
-	public String menu() {
-		return "menu";
-	}
-	
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-	    session.invalidate();
-	    return "redirect:/";
-	}
-	
     @Autowired
     private LoginService loginService;
-    @Autowired
-    private TaskDao  taskDao;
-    @Autowired
-    private UserDao userDao;
+
+    @GetMapping("/")
+    public String top() {
+        return "homePage";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+
+    @GetMapping("/menu")
+    public String menu() {
+        return "menu";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 
     @PostMapping("/signup")
     public String signup(
@@ -91,7 +82,7 @@ public class HomePageController {
 
         return "menu";
     }
-    
+
     @PostMapping("/login")
     public String login(
             @RequestParam("userId") String userId,
@@ -109,13 +100,13 @@ public class HomePageController {
             return "login";
         }
 
-        User user = userDao.findByUserIdAndPassword(userId, password);
+        boolean result = loginService.login(userId, password);
 
-        if (user != null) {
-            session.setAttribute("loginUsername", user.getUserId());
+        if (result) {
+            session.setAttribute("loginUsername", userId);
             return "redirect:/tasks";
         } else {
-            model.addAttribute("message", "ユーザ名またはパスワードが違います");
+            model.addAttribute("message", "ユーザー名またはパスワードが違います");
             return "login";
         }
     }

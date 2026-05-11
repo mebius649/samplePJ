@@ -17,10 +17,7 @@ public class UserDaoImpl implements UserDao {
         return userMapper.findByUserId(userId);
     }
 
-    @Override
-    public User findByUserIdAndPassword(String userId, String password) {
-        return userMapper.findByUserIdAndPassword(userId, password);
-    }
+
 
     @Override
     public void insert(User user) {
