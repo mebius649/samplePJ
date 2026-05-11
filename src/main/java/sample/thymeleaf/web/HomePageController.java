@@ -3,11 +3,14 @@ package sample.thymeleaf.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import sample.common.form.LoginForm;
+import sample.common.form.SignupForm;
 import sample.common.service.LoginService;
 
 @Controller
@@ -44,70 +47,43 @@ public class HomePageController {
 
     @PostMapping("/signup")
     public String signup(
-            @RequestParam("userId") String userId,
-            @RequestParam("password") String password,
+            @Valid SignupForm form,
+            BindingResult bindingResult,
             Model model) {
 
-        if (userId == null || userId.isBlank()) {
-            model.addAttribute("message", "ユーザIDを入力してください");
+        if (bindingResult.hasErrors()) {
             return "signup";
         }
 
-        if (password == null || password.isBlank()) {
-            model.addAttribute("message", "パスワードを入力してください");
-            return "signup";
-        }
-
-        if (!userId.matches("^[a-zA-Z0-9]+$")) {
-            model.addAttribute("message", "ユーザIDは半角英数字で入力してください");
-            return "signup";
-        }
-
-        if (!password.matches("^[a-zA-Z0-9]+$")) {
-            model.addAttribute("message", "パスワードは半角英数字で入力してください");
-            return "signup";
-        }
-
-        if (password.length() < 8) {
-            model.addAttribute("message", "パスワードは8桁以上で入力してください");
-            return "signup";
-        }
-
-        boolean result = loginService.signup(userId, password);
+        boolean result = loginService.signup(form.getUserId(), form.getPassword());
 
         if (!result) {
             model.addAttribute("message", "このユーザ名はすでに使われています");
             return "signup";
         }
 
-        return "menu";
+        return "redirect:/login";
     }
 
     @PostMapping("/login")
     public String login(
-            @RequestParam("userId") String userId,
-            @RequestParam("password") String password,
+            @Valid LoginForm form,
+            BindingResult bindingResult,
             HttpSession session,
             Model model) {
 
-        if (userId == null || userId.isBlank()) {
-            model.addAttribute("message", "ユーザIDを入力してください");
+        if (bindingResult.hasErrors()) {
             return "login";
         }
 
-        if (password == null || password.isBlank()) {
-            model.addAttribute("message", "パスワードを入力してください");
-            return "login";
-        }
-
-        boolean result = loginService.login(userId, password);
+        boolean result = loginService.login(form.getUserId(), form.getPassword());
 
         if (result) {
-            session.setAttribute("loginUsername", userId);
+            session.setAttribute("loginUsername", form.getUserId());
             return "redirect:/tasks";
         } else {
             model.addAttribute("message", "ユーザー名またはパスワードが違います");
             return "login";
         }
     }
-}
+    }
