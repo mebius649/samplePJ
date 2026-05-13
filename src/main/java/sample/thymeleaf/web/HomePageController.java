@@ -6,10 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import sample.common.form.LoginForm;
 import sample.common.form.SignupForm;
 import sample.common.service.LoginService;
 
@@ -63,27 +61,5 @@ public class HomePageController {
         }
 
         return "redirect:/login";
-    }
-
-    @PostMapping("/login")
-    public String login(
-            @Valid LoginForm form,
-            BindingResult bindingResult,
-            HttpSession session,
-            Model model) {
-
-        if (bindingResult.hasErrors()) {
-            return "login";
-        }
-
-        boolean result = loginService.login(form.getUserId(), form.getPassword());
-
-        if (result) {
-            session.setAttribute("loginUsername", form.getUserId());
-            return "redirect:/tasks";
-        } else {
-            model.addAttribute("message", "ユーザー名またはパスワードが違います");
-            return "login";
-        }
     }
     }

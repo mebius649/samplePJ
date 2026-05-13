@@ -45,6 +45,13 @@
   <center>
     <div class="form">
       <form th:action="@{/signup}" method="post">
+		
+		
+		<input type="hidden"
+		       th:name="${_csrf.parameterName}"
+		       th:value="${_csrf.token}">
+			   
+			   
         <div>
           ユーザ名（半角英字）
         </div>

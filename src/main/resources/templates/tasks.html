@@ -157,7 +157,7 @@
        <tr th:each="rec : ${allContents}">
       <td th:text="${rec.id}"></td>
       <td th:text="${rec.title}"></td>
-      <td th:utext="${rec.contents}"></td>
+      <td th:text="${rec.contents}" style="white-space: pre-wrap;"></td>
       <td th:text="${rec.name}"></td>
       <td th:text="${rec.startDate}"></td>
       <td th:text="${rec.endDate}"></td>
@@ -173,6 +173,11 @@
 		</button>
 		
 		<form th:action="@{/tasks/delete/{id}(id=${rec.id})}" method="post" style="display:inline;">
+			
+			<input type="hidden"
+			       th:name="${_csrf.parameterName}"
+			       th:value="${_csrf.token}">
+				   
 		  <button type="submit"
 		          th:if="${rec.id != null}"
 		          class="delete-button"
