@@ -20,14 +20,21 @@ public class SecurityConfig {
         return http
         	.headers(headers -> headers
         		.frameOptions(frame -> frame.deny())
-        	)
+        		)
+        	
+        	.sessionManagement(session -> session
+        	    .sessionFixation().migrateSession()
+        	        )
+        	
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login", "/signup", "/css/**").permitAll()
                 .anyRequest().authenticated()
+                
             )
+            
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/tasks", true)
+                .defaultSuccessUrl("/tasks", false)
                 .permitAll()
             )
             .logout(logout -> logout

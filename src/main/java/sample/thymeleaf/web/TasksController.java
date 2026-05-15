@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import sample.common.dao.entity.Task;
 import sample.common.form.TaskForm;
 import sample.common.service.TaskService;
@@ -104,7 +102,9 @@ public class TasksController {
         task.setStartDate(form.getStartDate() != null && !form.getStartDate().isEmpty() ? LocalDate.parse(form.getStartDate()) : null);
         task.setEndDate(form.getEndDate() != null && !form.getEndDate().isEmpty() ? LocalDate.parse(form.getEndDate()) : null);
         task.setUpdatedAt(LocalDateTime.now());
-
+        
+        taskService.update(task);
+        
         return "redirect:/tasks";
     }
     

@@ -27,10 +27,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    
-    implementation 'org.springframework.security:spring-security-web'
-	implementation 'org.springframework.security:spring-security-config'
-    
+
 }
 
 tasks.named('test') {

@@ -37,12 +37,6 @@ public class HomePageController {
         return "menu";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
-    }
-
     @PostMapping("/signup")
     public String signup(
             @Valid SignupForm form,
